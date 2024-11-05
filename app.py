@@ -45,20 +45,22 @@ if "score" not in st.session_state:
     st.session_state.score = 0
     st.session_state.trials = 0
 
-# Reset score and trials when Start is clicked
-if st.button("Start"):
-    st.session_state.score = 0
-    st.session_state.trials = 0
-    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-    st.session_state.selected_vowel = None
-    st.session_state.monophthong = ""
-    st.session_state.diphthong = ""
-    st.session_state.rhotic = ""
-
-# Row layout for buttons and audio
+# Row layout for Start, Next Word, and Audio
 button_col1, button_col2, audio_col = st.columns([1, 1, 5])
 
+# Start button and reset score/trials
 with button_col1:
+    if st.button("Start"):
+        st.session_state.score = 0
+        st.session_state.trials = 0
+        st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+        st.session_state.selected_vowel = None
+        st.session_state.monophthong = ""
+        st.session_state.diphthong = ""
+        st.session_state.rhotic = ""
+
+# Next Word button to select a new word
+with button_col2:
     if st.button("Next Word"):
         st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
         st.session_state.selected_vowel = None
@@ -66,6 +68,7 @@ with button_col1:
         st.session_state.diphthong = ""
         st.session_state.rhotic = ""
 
+# Display the audio player on the right
 with audio_col:
     st.write("Listen to the word:")
     audio_buffer = generate_audio(st.session_state.current_word)
