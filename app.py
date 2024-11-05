@@ -47,14 +47,18 @@ if "correct_count" not in st.session_state:
 if "attempts" not in st.session_state:
     st.session_state.attempts = 0
 
+if "answered" not in st.session_state:
+    st.session_state.answered = False
+
 # Button to get the next word
 if st.button("Next Word"):
-    # Choose a new random word and reset selections
+    # Choose a new random word, reset selections, and reset answered status
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
     st.session_state.selected_vowel = None
     st.session_state.monophthong = ""
     st.session_state.diphthong = ""
     st.session_state.rhotic = ""
+    st.session_state.answered = False
 
 # Display the audio player
 st.write("Listen to the word:")
@@ -76,14 +80,18 @@ with col3:
 
 # Submit button
 if st.button("Submit"):
-    # Check which vowel is selected
-    selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
-    st.session_state.attempts += 1  # Increment attempts for each submission
-    if selected_vowel == st.session_state.correct_vowel:
-        st.session_state.correct_count += 1  # Increment correct count if the answer is correct
-        st.success("Correct!")
-    else:
-        st.error("Try again.")
-    
+    if not st.session_state.answered:  # Only allow scoring if the current word hasn't been answered yet
+        # Check which vowel is selected
+        selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
+        st.session_state.attempts += 1  # Increment attempts for each submission
+        if selected_vowel == st.session_state.correct_vowel:
+            st.session_state.correct_count += 1  # Increment correct count if the answer is correct
+            st.success("Correct!")
+        else:
+            st.error("Try again.")
+        
+        # Mark the current word as answered
+        st.session_state.answered = True
+
     # Display the score
     st.write(f"Score: {st.session_state.correct_count} out of {st.session_state.attempts}")
