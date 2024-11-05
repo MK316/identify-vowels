@@ -21,6 +21,11 @@ word_dict = {
     'cut': '/ʌ/',
 }
 
+# Categories of vowels
+monophthongs = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/', '/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/']
+diphthongs = ['/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/', '/aʊ/']
+rhotic = ['/ɜ˞/', '/ɚ/']
+
 # Function to generate audio for the given word
 def generate_audio(word):
     tts = gTTS(text=word, lang='en', tld='us')  # American English accent
@@ -29,26 +34,11 @@ def generate_audio(word):
     audio_buffer.seek(0)
     return audio_buffer
 
-# Apply custom CSS to adjust button size for all buttons
-st.markdown(
-    """
-    <style>
-    .stButton > button {
-        width: 60px;
-        height: 40px;
-        font-size: 16px;
-        margin: 2px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Main app
 st.title("Vowel Sound Practice App")
 
 # Choose a random word from the dictionary if not already chosen or after "Next Word" is clicked
-if "current_word" not in st.session_state or st.button("Next Word", key="next_word_button"):
+if "current_word" not in st.session_state or st.button("Next Word"):
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
 
 # Display the audio player
@@ -56,23 +46,16 @@ st.write("Listen to the word:")
 audio_buffer = generate_audio(st.session_state.current_word)
 st.audio(audio_buffer, format="audio/mp3")
 
-# Display vowel options in a single row
+# Dropdowns for each category
 st.write("Choose the vowel sound for the word you heard:")
-vowel_options = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/', '/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/', '/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/', '/aʊ/', '/ɜ˞/', '/ɚ/']
-selected_vowel = None
+selected_monophthong = st.selectbox("Monophthongs", [""] + monophthongs, key="monophthong")
+selected_diphthong = st.selectbox("Diphthongs", [""] + diphthongs, key="diphthong")
+selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic")
 
-# Use columns to display buttons in rows
-cols = st.columns(len(vowel_options))
-for i, vowel in enumerate(vowel_options):
-    if cols[i % len(vowel_options)].button(vowel, key=f"vowel_{vowel}"):
-        st.session_state.selected_vowel = vowel
-
-# Feedback mechanism
-col_submit, col_next = st.columns([1, 1])
-with col_submit:
-    if st.button("Submit", key="submit_button"):
-        if "selected_vowel" in st.session_state:
-            if st.session_state.selected_vowel == st.session_state.correct_vowel:
-                st.success("Correct!")
-            else:
-                st.error("Try again.")
+# Submit button
+if st.button("Submit"):
+    selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
+    if selected_vowel == st.session_state.correct_vowel:
+        st.success("Correct!")
+    else:
+        st.error("Try again.")
