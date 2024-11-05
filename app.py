@@ -35,7 +35,7 @@ def generate_audio(word):
     return audio_buffer
 
 # Main app
-st.title("👄 Vowel Sound Practice App")
+st.title("Vowel Sound Practice App")
 
 # Initialize session state variables if not already set
 if "current_word" not in st.session_state:
@@ -48,15 +48,17 @@ if "answered" not in st.session_state:
     st.session_state.answered = False
 
 # Reset the game when "Start" is clicked
-col_start, col_next = st.columns([1, 1])
-with col_start:
-    if st.button("Start"):
-        st.session_state.correct_count = 0
-        st.session_state.attempts = 0
-        st.session_state.answered = False
-        # Choose the first random word
-        st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-with col_next:
+if st.button("Start"):
+    st.session_state.correct_count = 0
+    st.session_state.attempts = 0
+    st.session_state.answered = False
+    # Choose the first random word
+    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+
+# Place "Next Word" button and audio player in a row
+next_word_col, audio_col = st.columns([1, 3])
+
+with next_word_col:
     if st.button("Next Word"):
         # Choose a new random word, reset selections, and reset answered status
         st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
@@ -65,10 +67,10 @@ with col_next:
         st.session_state.diphthong = ""
         st.session_state.rhotic = ""
 
-# Display the audio player
-st.write("Listen to the word:")
-audio_buffer = generate_audio(st.session_state.current_word)
-st.audio(audio_buffer, format="audio/mp3")
+with audio_col:
+    st.write("Listen to the word:")
+    audio_buffer = generate_audio(st.session_state.current_word)
+    st.audio(audio_buffer, format="audio/mp3")
 
 # Horizontal arrangement for vowel categories
 st.write("Choose the vowel sound for the word you heard:")
