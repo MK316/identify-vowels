@@ -56,11 +56,10 @@ if "score" not in st.session_state:
     st.session_state.score = 0
     st.session_state.trials = 0
 
-# Arrange 'Start' and 'Next Word' buttons in one row and add color styling
-col1, col2, col3 = st.columns([1, 1, 3])
+# Arrange 'Start' and 'Next Word' buttons vertically
+col1, col2 = st.columns([1, 3])
 with col1:
     start_clicked = st.button("⛳ Start", key="start", help="Reset score and start over")
-with col2:
     next_word_clicked = st.button("▶️ Next Word", key="next", help="Get a new word")
 
 # Reset score and trials when "Start" is clicked
@@ -82,9 +81,10 @@ if next_word_clicked:
     st.session_state.rhotic = ""
 
 # Display the audio player
-st.write("🎧 Listen to the word and identify the stressed vowel:")
-audio_buffer = generate_audio(st.session_state.current_word)
-st.audio(audio_buffer, format="audio/mp3")
+with col2:
+    st.write("🎧 Listen to the word and identify the stressed vowel:")
+    audio_buffer = generate_audio(st.session_state.current_word)
+    st.audio(audio_buffer, format="audio/mp3")
 
 # Horizontal arrangement for vowel categories
 st.write("🎯 In this word, the stressed vowel is: (Choose one)")
