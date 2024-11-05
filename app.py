@@ -82,22 +82,22 @@ if next_word_clicked:
     st.session_state.rhotic = ""
 
 # Display the audio player
-st.write("Listen to the word and identify the stressed vowel:")
+st.write("🎧 Listen to the word and identify the stressed vowel:")
 audio_buffer = generate_audio(st.session_state.current_word)
 st.audio(audio_buffer, format="audio/mp3")
 
 # Horizontal arrangement for vowel categories
-st.write("🎧 In this word, the stressed vowel is: (Choose one)")
+st.write("🎯 In this word, the stressed vowel is: (Choose one)")
 
 col1, col2, col3 = st.columns(3)
 
 # Dropdowns for vowel selection with keys for session state
 with col1:
-    selected_monophthong = st.selectbox("Monophthongs", [""] + monophthongs, key="monophthong")
+    selected_monophthong = st.selectbox("⚪ Monophthongs", [""] + monophthongs, key="monophthong")
 with col2:
-    selected_diphthong = st.selectbox("Diphthongs", [""] + diphthongs, key="diphthong")
+    selected_diphthong = st.selectbox("⚪ Diphthongs", [""] + diphthongs, key="diphthong")
 with col3:
-    selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic")
+    selected_rhotic = st.selectbox("⚪ Rhotic Vowels", [""] + rhotic, key="rhotic")
 
 # Submit button
 if st.button("✅ Submit"):
