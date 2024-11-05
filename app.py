@@ -38,31 +38,30 @@ def generate_audio(word):
 st.title("Vowel Sound Practice App")
 
 # Initialize session state variables if not already set
-if "current_word" not in st.session_state:
+if "current_word" not in st.session_state or "correct_vowel" not in st.session_state:
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-if "correct_count" not in st.session_state:
-    st.session_state.correct_count = 0
-if "attempts" not in st.session_state:
-    st.session_state.attempts = 0
-if "answered" not in st.session_state:
-    st.session_state.answered = False
 
-# Reset the game when "Start" is clicked
+if "score" not in st.session_state:
+    st.session_state.score = 0
+    st.session_state.trials = 0
+
+# Reset score and trials when Start is clicked
 if st.button("Start"):
-    st.session_state.correct_count = 0
-    st.session_state.attempts = 0
-    st.session_state.answered = False
-    # Choose the first random word
+    st.session_state.score = 0
+    st.session_state.trials = 0
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+    st.session_state.selected_vowel = None
+    st.session_state.monophthong = ""
+    st.session_state.diphthong = ""
+    st.session_state.rhotic = ""
 
-# Place "Next Word" button and audio player in a row
-next_word_col, audio_col = st.columns([1, 3])
+# Row layout for buttons and audio
+button_col1, button_col2, audio_col = st.columns([1, 1, 5])
 
-with next_word_col:
+with button_col1:
     if st.button("Next Word"):
-        # Choose a new random word, reset selections, and reset answered status
         st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-        st.session_state.answered = False
+        st.session_state.selected_vowel = None
         st.session_state.monophthong = ""
         st.session_state.diphthong = ""
         st.session_state.rhotic = ""
@@ -87,18 +86,13 @@ with col3:
 
 # Submit button
 if st.button("Submit"):
-    if not st.session_state.answered:  # Only allow scoring if the current word hasn't been answered yet
-        # Check which vowel is selected
-        selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
-        st.session_state.attempts += 1  # Increment attempts for each submission
-        if selected_vowel == st.session_state.correct_vowel:
-            st.session_state.correct_count += 1  # Increment correct count if the answer is correct
-            st.success("Correct!")
-        else:
-            st.error("Try again.")
-        
-        # Mark the current word as answered
-        st.session_state.answered = True
-
-    # Display the score
-    st.write(f"Score: {st.session_state.correct_count} out of {st.session_state.attempts}")
+    # Check which vowel is selected
+    selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
+    if selected_vowel == st.session_state.correct_vowel:
+        st.success("Correct!")
+        st.session_state.score += 1
+    else:
+        st.error("Try again.")
+    
+    st.session_state.trials += 1
+    st.write(f"Score: {st.session_state.score} out of {st.session_state.trials}")
