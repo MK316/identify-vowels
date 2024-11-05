@@ -13,18 +13,23 @@ word_dict = {
     'bird': '/ɜ˞/',
     'about': '/aʊ/',
     'bed': '/ɛ/',
-    'bad': '/æ/',
-    'bit': '/ɪ/',
+    'battle': '/æ/',
+    'little': '/ɪ/',
     'bet': '/ɛ/',
-    'father': '/ɑ/',
-    'caught': '/ɔ/',
+    'comedy': '/ɑ/',
+    'boss': '/ɔ/',
     'cut': '/ʌ/',
     'hoy': '/ɔɪ/',
     'hawed': '/ɔ/',
-    "who'd": '/u/',
+    "canoe": '/u/',
     'cook': '/ʊ/',
     'mood': '/u/',
     'January': '/æ/',
+    'done': '/ʌ/',
+    'moisture': '/ɔɪ/',
+    'sober': '/oʊ/',
+    'combine': '/aɪ/',
+    'magic': '/æ/',
 }
 
 # Categories of vowels
@@ -77,7 +82,7 @@ if next_word_clicked:
     st.session_state.rhotic = ""
 
 # Display the audio player
-st.write("Listen to the word:")
+st.write("Listen to the word and identify the stressed vowel:")
 audio_buffer = generate_audio(st.session_state.current_word)
 st.audio(audio_buffer, format="audio/mp3")
 
