@@ -1,5 +1,6 @@
 import streamlit as st
 from gtts import gTTS
+import random
 import io
 
 # Sample word dictionary with IPA transcription
@@ -10,7 +11,7 @@ word_dict = {
     'boot': '/u/',
     'book': '/ʊ/',
     'bird': '/ɜ˞/',
-    'about': '/ə/',
+    'about': '/aʊ/',
     'bed': '/ɛ/',
     'bad': '/æ/',
     'bit': '/ɪ/',
@@ -18,7 +19,6 @@ word_dict = {
     'father': '/ɑ/',
     'caught': '/ɔ/',
     'cut': '/ʌ/',
-    'her': '/ɜ/'
 }
 
 # Function to generate audio for the given word
@@ -32,23 +32,30 @@ def generate_audio(word):
 # Main app
 st.title("Vowel Sound Practice App")
 
-# Select a random word from the dictionary
-word = st.selectbox("Choose a word to practice:", list(word_dict.keys()))
-correct_vowel = word_dict[word]
+# Choose a random word from the dictionary
+word, correct_vowel = random.choice(list(word_dict.items()))
 
 # Display the audio player
 st.write("Listen to the word:")
 audio_buffer = generate_audio(word)
 st.audio(audio_buffer, format="audio/mp3")
 
-# Display options for vowel selection
+# Display vowel options as clickable buttons
 st.write("Choose the vowel sound for the word you heard:")
-vowel_options = ['/i/', '/ɪ/', '/eɪ/', '/ɛ/', '/æ/', '/ɑ/', '/ɔ/', '/oʊ/', '/u/', '/ʊ/', '/ɝ/', '/ɜ˞/', '/ə/', '/ʌ/', '/ɚ/']
-selected_vowel = st.selectbox("Select the vowel sound:", vowel_options)
+vowel_options = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/', '/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/', '/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/','/aʊ/','/ɜ˞/', '/ɚ/']
 
-# Check the answer and give feedback
-if st.button("Submit Answer"):
-    if selected_vowel == correct_vowel:
+# Store selected vowel in session state
+if 'selected_vowel' not in st.session_state:
+    st.session_state.selected_vowel = None
+
+# Display buttons for each vowel option and capture the selection
+for vowel in vowel_options:
+    if st.button(vowel):
+        st.session_state.selected_vowel = vowel
+
+# Check the answer and give feedback if a vowel is selected
+if st.session_state.selected_vowel:
+    if st.session_state.selected_vowel == correct_vowel:
         st.success("Correct!")
     else:
         st.error("Try again")
