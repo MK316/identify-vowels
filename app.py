@@ -46,7 +46,7 @@ if "score" not in st.session_state:
     st.session_state.trials = 0
 
 # Adjusted layout for Start, Next Word, and Audio display
-button_col1, button_col2, audio_col = st.columns([0.5, 1.5, 5])
+button_col1, button_col2, audio_col = st.columns([1, 1.5, 5])
 
 # Start button and reset score/trials
 with button_col1:
