@@ -46,7 +46,8 @@ def generate_audio(word):
     return audio_buffer
 
 # Main app
-st.title("🐣 Vowel Sound Practice App [2024. 11. 05]")
+st.title("🐣 Vowel Sound Practice App")
+st.caption("Current version contains only 20 basic words. The complete word list will be applied later on. [2024. 11. 05]")
 
 # Initialize session state variables if not already set
 if "current_word" not in st.session_state or "correct_vowel" not in st.session_state:
