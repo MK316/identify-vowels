@@ -34,44 +34,21 @@ def generate_audio(word):
     audio_buffer.seek(0)
     return audio_buffer
 
-# Inject custom CSS for button styling
+# CSS for custom button colors
 st.markdown("""
     <style>
-        .button-start {
-            background-color: #4CAF50; /* Green */
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-right: 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .button-next {
-            background-color: #FF5722; /* Orange */
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-right: 5px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .button-submit {
-            background-color: #2196F3; /* Blue */
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .button-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .start-btn, .next-btn, .submit-btn {
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+    }
+    .start-btn { background-color: #4CAF50; } /* Green */
+    .next-btn { background-color: #FF5722; }  /* Orange */
+    .submit-btn { background-color: #2196F3; } /* Blue */
     </style>
 """, unsafe_allow_html=True)
 
@@ -86,34 +63,40 @@ if "score" not in st.session_state:
     st.session_state.score = 0
     st.session_state.trials = 0
 
-# Adjusted layout for Start, Next Word, and Audio display
-button_col1, button_col2, audio_col = st.columns([1, 1, 5])
+# HTML buttons with JavaScript to click the actual Streamlit buttons
+st.markdown("""
+    <div class="button-container">
+        <button class="start-btn" onclick="document.getElementById('start').click();">Start</button>
+        <button class="next-btn" onclick="document.getElementById('next').click();">Next Word</button>
+    </div>
+""", unsafe_allow_html=True)
 
-# Start button and reset score/trials
-with button_col1:
-    if st.button("Start", key="start_button"):
-        st.session_state.score = 0
-        st.session_state.trials = 0
-        st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-        st.session_state.selected_vowel = None
-        st.session_state.monophthong = ""
-        st.session_state.diphthong = ""
-        st.session_state.rhotic = ""
+# Hidden Streamlit buttons triggered by JavaScript
+start_button = st.button("Start", key="start")
+next_button = st.button("Next Word", key="next")
 
-# Next Word button to select a new word
-with button_col2:
-    if st.button("Next Word", key="next_button"):
-        st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-        st.session_state.selected_vowel = None
-        st.session_state.monophthong = ""
-        st.session_state.diphthong = ""
-        st.session_state.rhotic = ""
+# Reset score and trials when "Start" is clicked
+if start_button:
+    st.session_state.score = 0
+    st.session_state.trials = 0
+    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+    st.session_state.selected_vowel = None
+    st.session_state.monophthong = ""
+    st.session_state.diphthong = ""
+    st.session_state.rhotic = ""
 
-# Display the audio player on the right
-with audio_col:
-    st.write("Listen to the word:")
-    audio_buffer = generate_audio(st.session_state.current_word)
-    st.audio(audio_buffer, format="audio/mp3")
+# Select a new word when "Next Word" is clicked
+if next_button:
+    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+    st.session_state.selected_vowel = None
+    st.session_state.monophthong = ""
+    st.session_state.diphthong = ""
+    st.session_state.rhotic = ""
+
+# Display the audio player
+st.write("Listen to the word:")
+audio_buffer = generate_audio(st.session_state.current_word)
+st.audio(audio_buffer, format="audio/mp3")
 
 # Horizontal arrangement for vowel categories
 st.write("Choose the vowel sound for the word you heard:")
@@ -128,9 +111,16 @@ with col2:
 with col3:
     selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic")
 
-# Submit button
-if st.button("Submit", key="submit_button"):
-    # Check which vowel is selected
+# HTML Submit button
+st.markdown("""
+    <button class="submit-btn" onclick="document.getElementById('submit').click();">Submit</button>
+""", unsafe_allow_html=True)
+
+# Hidden Submit button to capture clicks from the HTML button
+submit_button = st.button("Submit", key="submit")
+
+# Check and display feedback
+if submit_button:
     selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
     if selected_vowel == st.session_state.correct_vowel:
         st.success("Correct!")
