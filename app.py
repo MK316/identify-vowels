@@ -40,6 +40,9 @@ st.title("Vowel Sound Practice App")
 # Initialize session state variables if not already set
 if "current_word" not in st.session_state or "correct_vowel" not in st.session_state:
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+    st.session_state.monophthong_selection = ""
+    st.session_state.diphthong_selection = ""
+    st.session_state.rhotic_selection = ""
 
 # Display the audio player
 st.write("Listen to the word:")
@@ -53,11 +56,11 @@ col1, col2, col3 = st.columns(3)
 
 # Dropdowns for vowel selection with keys for session state
 with col1:
-    selected_monophthong = st.selectbox("Monophthongs", [""] + monophthongs, key="monophthong")
+    selected_monophthong = st.selectbox("Monophthongs", [""] + monophthongs, key="monophthong_selection")
 with col2:
-    selected_diphthong = st.selectbox("Diphthongs", [""] + diphthongs, key="diphthong")
+    selected_diphthong = st.selectbox("Diphthongs", [""] + diphthongs, key="diphthong_selection")
 with col3:
-    selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic")
+    selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic_selection")
 
 # Arrange the Submit and Next Word buttons in a row
 button_col1, button_col2 = st.columns(2)
@@ -79,9 +82,10 @@ if submit_pressed:
 
 # Next Word button logic
 if next_word_pressed:
-    # Choose a new random word and reset selections
+    # Choose a new random word
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-    st.session_state.selected_vowel = None
-    st.session_state.monophthong = ""
-    st.session_state.diphthong = ""
-    st.session_state.rhotic = ""
+    
+    # Reset the dropdowns by updating their session state keys
+    st.session_state.monophthong_selection = ""
+    st.session_state.diphthong_selection = ""
+    st.session_state.rhotic_selection = ""
