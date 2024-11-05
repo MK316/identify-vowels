@@ -29,12 +29,20 @@ def generate_audio(word):
     audio_buffer.seek(0)
     return audio_buffer
 
-# Apply custom CSS to adjust button width
+# Apply custom CSS to adjust button width and height
 st.markdown(
     """
     <style>
     .stButton button {
+        width: 80px;
+        height: 40px;
+        font-size: 16px;
+        padding: 8px;
+    }
+    .vowel-btn button {
         width: 60px;
+        height: 40px;
+        font-size: 16px;
         margin: 2px;
     }
     </style>
@@ -63,7 +71,7 @@ selected_vowel = None
 cols = st.columns(len(vowel_options))
 for i, vowel in enumerate(vowel_options):
     with cols[i]:
-        if st.button(vowel, key=f"vowel_{vowel}"):
+        if st.button(vowel, key=f"vowel_{vowel}", use_container_width=True, css_classes=["vowel-btn"]):
             st.session_state.selected_vowel = vowel
 
 # Feedback mechanism
