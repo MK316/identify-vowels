@@ -37,9 +37,18 @@ def generate_audio(word):
 # Main app
 st.title("Vowel Sound Practice App")
 
-# Choose a random word from the dictionary if not already chosen or after "Next Word" is clicked
-if "current_word" not in st.session_state or st.button("Next Word"):
+# Initialize session state variables if not already set
+if "current_word" not in st.session_state or "correct_vowel" not in st.session_state:
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+
+# Button to get the next word
+if st.button("Next Word"):
+    # Choose a new random word and reset selections
+    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+    st.session_state.selected_vowel = None
+    st.session_state.monophthong = ""
+    st.session_state.diphthong = ""
+    st.session_state.rhotic = ""
 
 # Display the audio player
 st.write("Listen to the word:")
@@ -51,6 +60,7 @@ st.write("Choose the vowel sound for the word you heard:")
 
 col1, col2, col3 = st.columns(3)
 
+# Dropdowns for vowel selection with keys for session state
 with col1:
     selected_monophthong = st.selectbox("Monophthongs", [""] + monophthongs, key="monophthong")
 with col2:
@@ -60,6 +70,7 @@ with col3:
 
 # Submit button
 if st.button("Submit"):
+    # Check which vowel is selected
     selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
     if selected_vowel == st.session_state.correct_vowel:
         st.success("Correct!")
