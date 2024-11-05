@@ -32,9 +32,10 @@ def generate_audio(word):
 # Main app
 st.title("Vowel Sound Practice App")
 
-# Choose a random word from the dictionary if not already chosen or after "Submit" is clicked
-if "current_word" not in st.session_state or st.button("Next Word"):
+# Choose a random word from the dictionary if not already chosen or after "Next Word" is clicked
+if "current_word" not in st.session_state or st.session_state.get("next_word"):
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+    st.session_state.next_word = False
 
 # Display the audio player
 st.write("Listen to the word:")
@@ -43,18 +44,18 @@ st.audio(audio_buffer, format="audio/mp3")
 
 # Display vowel options as clickable buttons in three rows
 st.write("Choose the vowel sound for the word you heard:")
+
+# Vowel options organized in three rows
 vowel_options_row1 = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/']
 vowel_options_row2 = ['/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/']
 vowel_options_row3 = ['/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/', '/aʊ/', '/ɜ˞/', '/ɚ/']
 
-selected_vowel = st.radio("Select the vowel sound:", vowel_options_row1 + vowel_options_row2 + vowel_options_row3)
+# Create three columns for each row of vowel options
+col1, col2, col3, col4, col5 = st.columns(5)
+with col1: option1 = st.radio("", vowel_options_row1, index=0, key="row1", label_visibility="collapsed")
+with col2: option2 = st.radio("", vowel_options_row2, index=0, key="row2", label_visibility="collapsed")
+with col3: option3 = st.radio("", vowel_options_row3, index=0, key="row3", label_visibility="collapsed")
 
-# Submit button to check answer and load a new word
-if st.button("Submit"):
-    if selected_vowel == st.session_state.correct_vowel:
-        st.success("Correct!")
-    else:
-        st.error("Try again.")
-    
-    # Load a new word for the next attempt
-    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+# Selected vowel
+selected_vowel = st.session_state.row1 if st.session_state.row1 else (
+                 st.session_state.row2 if st.session_state.row
