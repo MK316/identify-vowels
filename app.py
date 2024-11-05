@@ -35,30 +35,35 @@ def generate_audio(word):
     return audio_buffer
 
 # Main app
-st.title("Vowel Sound Practice App")
+st.title("👄 Vowel Sound Practice App")
 
 # Initialize session state variables if not already set
-if "current_word" not in st.session_state or "correct_vowel" not in st.session_state:
+if "current_word" not in st.session_state:
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-
 if "correct_count" not in st.session_state:
     st.session_state.correct_count = 0
-
 if "attempts" not in st.session_state:
     st.session_state.attempts = 0
-
 if "answered" not in st.session_state:
     st.session_state.answered = False
 
-# Button to get the next word
-if st.button("Next Word"):
-    # Choose a new random word, reset selections, and reset answered status
-    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
-    st.session_state.selected_vowel = None
-    st.session_state.monophthong = ""
-    st.session_state.diphthong = ""
-    st.session_state.rhotic = ""
-    st.session_state.answered = False
+# Reset the game when "Start" is clicked
+col_start, col_next = st.columns([1, 1])
+with col_start:
+    if st.button("Start"):
+        st.session_state.correct_count = 0
+        st.session_state.attempts = 0
+        st.session_state.answered = False
+        # Choose the first random word
+        st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+with col_next:
+    if st.button("Next Word"):
+        # Choose a new random word, reset selections, and reset answered status
+        st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
+        st.session_state.answered = False
+        st.session_state.monophthong = ""
+        st.session_state.diphthong = ""
+        st.session_state.rhotic = ""
 
 # Display the audio player
 st.write("Listen to the word:")
