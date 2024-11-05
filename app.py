@@ -34,24 +34,6 @@ def generate_audio(word):
     audio_buffer.seek(0)
     return audio_buffer
 
-# CSS for custom button colors
-st.markdown("""
-    <style>
-    .start-btn, .next-btn, .submit-btn {
-        color: white;
-        font-size: 16px;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin: 5px;
-    }
-    .start-btn { background-color: #4CAF50; } /* Green */
-    .next-btn { background-color: #FF5722; }  /* Orange */
-    .submit-btn { background-color: #2196F3; } /* Blue */
-    </style>
-""", unsafe_allow_html=True)
-
 # Main app
 st.title("Vowel Sound Practice App")
 
@@ -63,20 +45,15 @@ if "score" not in st.session_state:
     st.session_state.score = 0
     st.session_state.trials = 0
 
-# HTML buttons with JavaScript to click the actual Streamlit buttons
-st.markdown("""
-    <div class="button-container">
-        <button class="start-btn" onclick="document.getElementById('start').click();">Start</button>
-        <button class="next-btn" onclick="document.getElementById('next').click();">Next Word</button>
-    </div>
-""", unsafe_allow_html=True)
-
-# Hidden Streamlit buttons triggered by JavaScript
-start_button = st.button("Start", key="start")
-next_button = st.button("Next Word", key="next")
+# Arrange 'Start' and 'Next Word' buttons in one row and add color styling
+col1, col2, col3 = st.columns([1, 1, 3])
+with col1:
+    start_clicked = st.button("Start", key="start", help="Reset score and start over")
+with col2:
+    next_word_clicked = st.button("Next Word", key="next", help="Get a new word")
 
 # Reset score and trials when "Start" is clicked
-if start_button:
+if start_clicked:
     st.session_state.score = 0
     st.session_state.trials = 0
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
@@ -86,7 +63,7 @@ if start_button:
     st.session_state.rhotic = ""
 
 # Select a new word when "Next Word" is clicked
-if next_button:
+if next_word_clicked:
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
     st.session_state.selected_vowel = None
     st.session_state.monophthong = ""
@@ -111,16 +88,9 @@ with col2:
 with col3:
     selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic")
 
-# HTML Submit button
-st.markdown("""
-    <button class="submit-btn" onclick="document.getElementById('submit').click();">Submit</button>
-""", unsafe_allow_html=True)
-
-# Hidden Submit button to capture clicks from the HTML button
-submit_button = st.button("Submit", key="submit")
-
-# Check and display feedback
-if submit_button:
+# Submit button
+if st.button("Submit"):
+    # Check which vowel is selected
     selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
     if selected_vowel == st.session_state.correct_vowel:
         st.success("Correct!")
