@@ -88,7 +88,7 @@ with col2:
     st.audio(audio_buffer, format="audio/mp3")
 
 # Horizontal arrangement for vowel categories
-st.write("🎯 Choose the stressed vowel:")
+# st.write("🎯 Choose the stressed vowel:")
 
 col1, col2, col3 = st.columns(3)
 
