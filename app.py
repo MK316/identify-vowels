@@ -32,8 +32,15 @@ def generate_audio(word):
 # Main app
 st.title("Vowel Sound Practice App")
 
-# Choose a random word from the dictionary
-word, correct_vowel = random.choice(list(word_dict.items()))
+# Initialize session state for the selected word and vowel
+if 'word' not in st.session_state or 'correct_vowel' not in st.session_state:
+    # Choose a random word from the dictionary
+    word, correct_vowel = random.choice(list(word_dict.items()))
+    st.session_state.word = word
+    st.session_state.correct_vowel = correct_vowel
+else:
+    word = st.session_state.word
+    correct_vowel = st.session_state.correct_vowel
 
 # Display the audio player
 st.write("Listen to the word:")
