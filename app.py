@@ -59,7 +59,7 @@ if "score" not in st.session_state:
 # Arrange 'Start' and 'Next Word' buttons vertically
 col1, col2 = st.columns([1, 3])
 with col1:
-    start_clicked = st.button("⛳ Start", key="start", help="Reset score and start over")
+    start_clicked = st.button("⛳ Start / Reset", key="start", help="Reset score and start over")
     next_word_clicked = st.button("▶️ Next Word", key="next", help="Get a new word")
 
 # Reset score and trials when "Start" is clicked
