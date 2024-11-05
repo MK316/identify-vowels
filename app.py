@@ -35,7 +35,7 @@ def generate_audio(word):
     return audio_buffer
 
 # Main app
-st.title("Vowel Sound Practice App")
+st.title("👄 Vowel Sound Practice App")
 
 # Initialize session state variables if not already set
 if "current_word" not in st.session_state or "correct_vowel" not in st.session_state:
@@ -48,9 +48,9 @@ if "score" not in st.session_state:
 # Arrange 'Start' and 'Next Word' buttons in one row and add color styling
 col1, col2, col3 = st.columns([1, 1, 3])
 with col1:
-    start_clicked = st.button("Start", key="start", help="Reset score and start over")
+    start_clicked = st.button("⛳ Start", key="start", help="Reset score and start over")
 with col2:
-    next_word_clicked = st.button("Next Word", key="next", help="Get a new word")
+    next_word_clicked = st.button("▶️ Next Word", key="next", help="Get a new word")
 
 # Reset score and trials when "Start" is clicked
 if start_clicked:
@@ -89,7 +89,7 @@ with col3:
     selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic")
 
 # Submit button
-if st.button("Submit"):
+if st.button("✅ Submit"):
     # Check which vowel is selected
     selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
     if selected_vowel == st.session_state.correct_vowel:
