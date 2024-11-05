@@ -87,7 +87,7 @@ audio_buffer = generate_audio(st.session_state.current_word)
 st.audio(audio_buffer, format="audio/mp3")
 
 # Horizontal arrangement for vowel categories
-st.write("Choose the vowel sound for the word you heard:")
+st.write("🎧 In this word, the stressed vowel is: (Choose one)")
 
 col1, col2, col3 = st.columns(3)
 
