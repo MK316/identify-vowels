@@ -6,30 +6,34 @@ import io
 # Sample word dictionary with IPA transcription
 word_dict = {
     'head': '/ɛ/',
-    'beat': '/i/',
-    'bat': '/æ/',
-    'boot': '/u/',
+    'neat': '/i/',
+    'battery': '/æ/',
+    'hallucinate': '/u/',
     'book': '/ʊ/',
     'bird': '/ɜ˞/',
     'about': '/aʊ/',
-    'bed': '/ɛ/',
+    'sentence': '/ɛ/',
     'battle': '/æ/',
     'little': '/ɪ/',
-    'bet': '/ɛ/',
+    'betting': '/ɛ/',
     'comedy': '/ɑ/',
     'boss': '/ɔ/',
-    'cut': '/ʌ/',
-    'hoy': '/ɔɪ/',
-    'hawed': '/ɔ/',
+    'monday': '/ʌ/',
+    'oyster': '/ɔɪ/',
+    'taught': '/ɔ/',
     "canoe": '/u/',
-    'cook': '/ʊ/',
+    'looking': '/ʊ/',
     'mood': '/u/',
     'January': '/æ/',
-    'done': '/ʌ/',
+    'come': '/ʌ/',
     'moisture': '/ɔɪ/',
     'sober': '/oʊ/',
     'combine': '/aɪ/',
     'magic': '/æ/',
+    'return': '/ɜ˞/',
+    'negotiate': '/oʊ/',
+    'convenient': '/i/',
+    'wolf': '/ʊ/',
 }
 
 # Categories of vowels
@@ -47,7 +51,7 @@ def generate_audio(word):
 
 # Main app
 st.title("🐣 Vowel Sound Practice App")
-st.caption("Current version contains only 20 basic words. The complete word list will be applied later on. [2024. 11. 05]")
+st.caption("Current version contains only 30 basic words. An extended word list will be applied later on. [2024. 11. 05]")
 
 # Initialize session state variables if not already set
 if "current_word" not in st.session_state or "correct_vowel" not in st.session_state:
