@@ -41,27 +41,15 @@ st.write("Listen to the word:")
 audio_buffer = generate_audio(st.session_state.current_word)
 st.audio(audio_buffer, format="audio/mp3")
 
-# Display vowel options in three rows
+# Display vowel options in a single row with unique keys for each button
 st.write("Choose the vowel sound for the word you heard:")
-vowel_options_row1 = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/']
-vowel_options_row2 = ['/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/']
-vowel_options_row3 = ['/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/', '/aʊ/', '/ɜ˞/', '/ɚ/']
+vowel_options = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/', '/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/', '/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/', '/aʊ/', '/ɜ˞/', '/ɚ/']
+selected_vowel = None
 
-# Display vowel options in three rows with unique keys for each button
-col1, col2, col3, col4, col5 = st.columns(5)
-for i, vowel in enumerate(vowel_options_row1):
-    with [col1, col2, col3, col4, col5][i]:
-        if st.button(vowel, key=f"vowel_{vowel}_row1"):
-            st.session_state.selected_vowel = vowel
-
-for i, vowel in enumerate(vowel_options_row2):
-    with [col1, col2, col3, col4, col5][i]:
-        if st.button(vowel, key=f"vowel_{vowel}_row2"):
-            st.session_state.selected_vowel = vowel
-
-for i, vowel in enumerate(vowel_options_row3):
-    with [col1, col2, col3, col4, col5][i]:
-        if st.button(vowel, key=f"vowel_{vowel}_row3"):
+cols = st.columns(len(vowel_options))
+for i, vowel in enumerate(vowel_options):
+    with cols[i]:
+        if st.button(vowel, key=f"vowel_{vowel}"):
             st.session_state.selected_vowel = vowel
 
 # Display feedback and allow user to continue
@@ -73,5 +61,3 @@ with col_submit:
                 st.success("Correct!")
             else:
                 st.error("Try again.")
-
-# Note: "Next Word" button will refresh the word at the top of the code block
