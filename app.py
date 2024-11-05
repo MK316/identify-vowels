@@ -29,17 +29,11 @@ def generate_audio(word):
     audio_buffer.seek(0)
     return audio_buffer
 
-# Apply custom CSS to adjust button width and height
+# Apply custom CSS to adjust button size for all buttons
 st.markdown(
     """
     <style>
-    .stButton button {
-        width: 80px;
-        height: 40px;
-        font-size: 16px;
-        padding: 8px;
-    }
-    .vowel-btn button {
+    .stButton > button {
         width: 60px;
         height: 40px;
         font-size: 16px;
@@ -62,17 +56,16 @@ st.write("Listen to the word:")
 audio_buffer = generate_audio(st.session_state.current_word)
 st.audio(audio_buffer, format="audio/mp3")
 
-# Display vowel options in a single row with unique keys for each button
+# Display vowel options in a single row
 st.write("Choose the vowel sound for the word you heard:")
 vowel_options = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/', '/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/', '/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/', '/aʊ/', '/ɜ˞/', '/ɚ/']
 selected_vowel = None
 
-# Use columns to display the buttons in a row
+# Use columns to display buttons in rows
 cols = st.columns(len(vowel_options))
 for i, vowel in enumerate(vowel_options):
-    with cols[i]:
-        if st.button(vowel, key=f"vowel_{vowel}", use_container_width=True, css_classes=["vowel-btn"]):
-            st.session_state.selected_vowel = vowel
+    if cols[i % len(vowel_options)].button(vowel, key=f"vowel_{vowel}"):
+        st.session_state.selected_vowel = vowel
 
 # Feedback mechanism
 col_submit, col_next = st.columns([1, 1])
