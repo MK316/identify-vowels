@@ -41,6 +41,12 @@ st.title("Vowel Sound Practice App")
 if "current_word" not in st.session_state or "correct_vowel" not in st.session_state:
     st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
 
+if "correct_count" not in st.session_state:
+    st.session_state.correct_count = 0
+
+if "attempts" not in st.session_state:
+    st.session_state.attempts = 0
+
 # Button to get the next word
 if st.button("Next Word"):
     # Choose a new random word and reset selections
@@ -72,7 +78,12 @@ with col3:
 if st.button("Submit"):
     # Check which vowel is selected
     selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
+    st.session_state.attempts += 1  # Increment attempts for each submission
     if selected_vowel == st.session_state.correct_vowel:
+        st.session_state.correct_count += 1  # Increment correct count if the answer is correct
         st.success("Correct!")
     else:
         st.error("Try again.")
+    
+    # Display the score
+    st.write(f"Score: {st.session_state.correct_count} out of {st.session_state.attempts}")
