@@ -46,11 +46,17 @@ st.write("Listen to the word:")
 audio_buffer = generate_audio(st.session_state.current_word)
 st.audio(audio_buffer, format="audio/mp3")
 
-# Dropdowns for each category
+# Horizontal arrangement for vowel categories
 st.write("Choose the vowel sound for the word you heard:")
-selected_monophthong = st.selectbox("Monophthongs", [""] + monophthongs, key="monophthong")
-selected_diphthong = st.selectbox("Diphthongs", [""] + diphthongs, key="diphthong")
-selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    selected_monophthong = st.selectbox("Monophthongs", [""] + monophthongs, key="monophthong")
+with col2:
+    selected_diphthong = st.selectbox("Diphthongs", [""] + diphthongs, key="diphthong")
+with col3:
+    selected_rhotic = st.selectbox("Rhotic Vowels", [""] + rhotic, key="rhotic")
 
 # Submit button
 if st.button("Submit"):
