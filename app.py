@@ -87,7 +87,7 @@ with col2:
     st.audio(audio_buffer, format="audio/mp3")
 
 # Horizontal arrangement for vowel categories
-st.write("🎯 In this word, the stressed vowel is: (Choose one)")
+st.write("🎯 Choose the stressed vowel:")
 
 col1, col2, col3 = st.columns(3)
 
@@ -100,7 +100,7 @@ with col3:
     selected_rhotic = st.selectbox("⚪ Rhotic Vowels", [""] + rhotic, key="rhotic")
 
 # Submit button
-if st.button("✅ Submit"):
+if st.button("Submit"):
     # Check which vowel is selected
     selected_vowel = selected_monophthong or selected_diphthong or selected_rhotic
     if selected_vowel == st.session_state.correct_vowel:
