@@ -32,37 +32,29 @@ def generate_audio(word):
 # Main app
 st.title("Vowel Sound Practice App")
 
-# Initialize session state for the selected word and vowel
-if 'word' not in st.session_state or 'correct_vowel' not in st.session_state:
-    # Choose a random word from the dictionary
-    word, correct_vowel = random.choice(list(word_dict.items()))
-    st.session_state.word = word
-    st.session_state.correct_vowel = correct_vowel
-else:
-    word = st.session_state.word
-    correct_vowel = st.session_state.correct_vowel
+# Choose a random word from the dictionary if not already chosen or after "Submit" is clicked
+if "current_word" not in st.session_state or st.button("Next Word"):
+    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
 
 # Display the audio player
 st.write("Listen to the word:")
-audio_buffer = generate_audio(word)
+audio_buffer = generate_audio(st.session_state.current_word)
 st.audio(audio_buffer, format="audio/mp3")
 
-# Display vowel options as clickable buttons
+# Display vowel options as clickable buttons in three rows
 st.write("Choose the vowel sound for the word you heard:")
-vowel_options = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/', '/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/', '/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/','/aʊ/','/ɜ˞/', '/ɚ/']
+vowel_options_row1 = ['/i/', '/ɪ/', '/ɛ/', '/æ/', '/u/']
+vowel_options_row2 = ['/ʊ/', '/ɔ/', '/ə/', '/ʌ/', '/ɑ/']
+vowel_options_row3 = ['/eɪ/', '/oʊ/', '/ɔɪ/', '/aɪ/', '/aʊ/', '/ɜ˞/', '/ɚ/']
 
-# Store selected vowel in session state
-if 'selected_vowel' not in st.session_state:
-    st.session_state.selected_vowel = None
+selected_vowel = st.radio("Select the vowel sound:", vowel_options_row1 + vowel_options_row2 + vowel_options_row3)
 
-# Display buttons for each vowel option and capture the selection
-for vowel in vowel_options:
-    if st.button(vowel):
-        st.session_state.selected_vowel = vowel
-
-# Check the answer and give feedback if a vowel is selected
-if st.session_state.selected_vowel:
-    if st.session_state.selected_vowel == correct_vowel:
+# Submit button to check answer and load a new word
+if st.button("Submit"):
+    if selected_vowel == st.session_state.correct_vowel:
         st.success("Correct!")
     else:
-        st.error("Try again")
+        st.error("Try again.")
+    
+    # Load a new word for the next attempt
+    st.session_state.current_word, st.session_state.correct_vowel = random.choice(list(word_dict.items()))
